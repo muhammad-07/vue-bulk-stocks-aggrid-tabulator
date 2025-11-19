@@ -5,10 +5,19 @@ import BulkStock from '@/views/BulkStock.vue';
 import store from '@/store';
 
 const routes = [
-  { path: '/', redirect: '/login' },
+  { path: '/', redirect: '/stocks' },
+
   { path: '/login', component: Login },
+
   { path: '/stocks', component: StockList, meta: { requiresAuth: true }},
   { path: '/bulk', component: BulkStock, meta: { requiresAuth: true }},
+  { 
+    path: '/logout',
+    beforeEnter: (to, from, next) => {
+      store.dispatch('logout');
+      next('/login');
+    }
+  }
 ];
 
 const router = createRouter({
@@ -16,10 +25,18 @@ const router = createRouter({
   routes
 });
 
+
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
+  const isLoggedIn = store.getters.isAuthenticated;
+
+  if (to.path === '/login' && isLoggedIn) {
+    return next('/stocks');
+  }
+
+  if (to.meta.requiresAuth && !isLoggedIn) {
     return next('/login');
   }
+
   next();
 });
 

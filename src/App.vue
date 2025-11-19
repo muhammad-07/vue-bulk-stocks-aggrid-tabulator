@@ -1,10 +1,8 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/stocks">Stock List</router-link> |
-    <router-link to="/bulk">Add Stock</router-link>
-  </nav>
-  <router-view/>
+  <div>
+    <Navbar />
+    <router-view />
+  </div>
 </template>
 
 <style>
@@ -29,3 +27,10 @@ nav a.router-link-exact-active {
   color: #42b983;
 }
 </style>
+<script>
+import Navbar from '@/components/Navbar.vue';
+
+export default {
+  components: { Navbar }
+};
+</script>

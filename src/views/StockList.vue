@@ -5,7 +5,7 @@
       <input v-model="q" placeholder="Search..." @keyup.enter="reload" />
       <button @click="reload">Search</button>
       <button @click="goBulk">Bulk Add</button>
-      <button @click="logout">Logout</button>
+      
     </div>
     <div id="stock-table"></div>
   </div>
@@ -16,7 +16,6 @@ import { onMounted, ref } from 'vue';
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
 import 'tabulator-tables/dist/css/tabulator.min.css';
 import api from '../services/api';
-import store from '../store';
 import router from '../router';
 
 export default {
@@ -51,7 +50,13 @@ export default {
           { title: 'Item Name', field: 'item_name' },
           { title: 'Qty', field: 'quantity', width: 80 },
           { title: 'Store', field: 'store.name' },
-          { title: 'In-Stock Date', field: 'in_stock_date' },
+          {
+            title: 'In-Stock Date',
+            field: 'in_stock_date',
+            formatter: function (cell, formatterParams, onRendered) {
+              return new Date(cell.getValue()).toLocaleDateString('en-GB');
+            }
+          },
           { title: 'Status', field: 'status' },
           {
             title: 'Actions', hozAlign: 'center', formatter: function (cell, formatterParams, onRendered) {
@@ -79,12 +84,7 @@ export default {
 
     const goBulk = () => router.push('/bulk');
 
-    const logout = async () => {
-      await store.dispatch('logout');
-      router.push('/login');
-    };
-
-    return { q, reload, goBulk, logout };
+    return { q, reload, goBulk };
   }
 }
 </script>

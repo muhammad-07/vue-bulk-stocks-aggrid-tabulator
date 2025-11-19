@@ -28,8 +28,6 @@ export default {
     const rowData = ref([]);
     const stores = ref([]);
 
-    // --- Value Formatter Function ---
-    // This function displays the 'name' in the grid cell
     const storeValueFormatter = (params) => {
       if (!params.value || stores.value.length === 0) return '';
       const store = stores.value.find(s => s.id == params.value);
@@ -79,8 +77,8 @@ export default {
     const addRow = () => {
       
       rowData.value = [...rowData.value, { 
-        item_code: 'ItemCode-',
-        item_name: 'Item',
+        item_code: '',
+        item_name: '',
         quantity: 1,
         location: 'Surat',
         store_id: stores.value[0]?.id.toString() || null,
